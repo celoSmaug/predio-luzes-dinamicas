@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prédio com Luzes</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1a1a;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .building {
+            width: 300px;
+            height: 400px;
+            background-color: #666;
+            position: relative;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .window {
+            background-color: #333;
+            border-radius: 5px;
+            transition: background-color 0.5s ease;
+        }
+
+        .window[data-light="on"] {
+            background-color: #ffeb3b;
+            box-shadow: 0 0 20px #ffeb3b;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 24px;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="building">
+            <div class="window" data-light="off"></div>
+            <div class="window" data-light="off"></div>
+            <div class="window" data-light="off"></div>
+            <div class="window" data-light="off"></div>
+            <div class="window" data-light="off"></div>
+            <div class="window" data-light="off"></div>
+            <div class="window" data-light="off"></div>
+            <div class="window" data-light="off"></div>
+            <div class="window" data-light="off"></div>
+        </div>
+        <div class="message" id="message"></div>
+    </div>
+    <script>
+        function atualizarPredio() {
+            const agora = new Date();
+            const horas = agora.getHours();
+            const minutos = agora.getMinutes();
+            const horarioAtual = horas * 60 + minutos;
+            const horarioLimite = 18 * 60; // 18:00 em minutos
+
+            const janelas = document.querySelectorAll('.window');
+            const mensagem = document.getElementById('message');
+
+            if (horarioAtual < horarioLimite) {
+                // Antes das 18:00
+                janelas.forEach(janela => {
+                    janela.setAttribute('data-light', 'off');
+                });
+                mensagem.textContent = 'Bom dia';
+            } else {
+                // Depois das 18:00
+                janelas.forEach(janela => {
+                    janela.setAttribute('data-light', 'on');
+                });
+                mensagem.textContent = 'Boa noite';
+            }
+        }
+
+        // Atualiza imediatamente quando a página carrega
+        atualizarPredio();
+
+        // Atualiza a cada minuto
+        setInterval(atualizarPredio, 60000);
+    </script>
+</body>
+</html> 
